@@ -1,127 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-3.0.xsd"
+       default-autowire="byName">
 
-    <!-- =========================================================
-         Shiro Core Components - Not Spring Specific
-         ========================================================= -->
-    <!-- Shiro's main business-tier object for web-enabled applications
-         (use DefaultSecurityManager instead when there is no web environment)-->
-    <!--
-    1. 配置 SecurityManager!
-    -->
-    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
-        <property name="cacheManager" ref="cacheManager"/>
-        <property name="authenticator" ref="authenticator"></property>
-        <property name="realms">
+
+    <!-- 引入属性文件 -->
+    <bean id="propertyConfigurer"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
+        <property name="ignoreResourceNotFound" value="true" />
+        <property name="locations">
             <list>
-                <ref bean="jdbcRealm"/>
-                <ref bean="secondRealm"/>
+                <value>classpath:jdbc.properties</value>
+                <!--<value>classpath:shiro-config.properties</value>-->
             </list>
         </property>
     </bean>
 
+    <!-- 也可以全部引入-->
+    <!--<context:property-placeholder location="classpath:*.properties" />-->
 
+    <!-- 自动扫瞄 -->
+    <context:component-scan base-package="cn.jiahaixin" />
+
+    <!--<import resource="classpath:config/spring-redis.xml"/>-->
+
+
+
+    <!-- db配置 -->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+        <property name="url" value="${jdbc.url}" />
+        <property name="driverClassName" value="${jdbc.driverClassName}" />
+        <property name="username" value="${jdbc.username}" />
+        <property name="password" value="${jdbc.password}" />
+
+    </bean>
+
+    <bean id="sessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <!--<property name="mapperLocations" value="classpath*:cls/taishan/**/mapper/*.xml"></property>-->
+    </bean>
     <!--
-      2. 配置 CacheManager.
-      2.1 需要加入 ehcache 的 jar 包及配置文件.
-     -->
-    <bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
-        <!-- Set a net.sf.ehcache.CacheManager instance here if you already have one.  If not, a new one
-             will be creaed with a default config:
-             <property name="cacheManager" ref="ehCacheManager"/> -->
-        <!-- If you don't have a pre-built net.sf.ehcache.CacheManager instance to inject, but you want
-             a specific Ehcache configuration to be used, specify that here.  If you don't, a default
-             will be used.: -->
-        <property name="cacheManagerConfigFile" value="classpath:ehcache.xml"/>
+        <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+            &lt;!&ndash; 配置dao与sqlSessionFactory的映射关系，多个dao包时，用逗号分隔 &ndash;&gt;
+            <property name="basePackage" value="cls.taishan.**.dao" />
+            <property name="sqlSessionFactoryBeanName" value="sessionFactory"></property>
+        </bean>-->
+
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSource" />
     </bean>
 
-
-    <bean id="authenticator"
-          class="org.apache.shiro.authc.pam.ModularRealmAuthenticator">
-        <!--认证策略 默认是 AtLeastOneSuccessfulStrategy  还有FirstSuccessfulStrategy 等-->
-        <property name="authenticationStrategy">
-            <bean class="org.apache.shiro.authc.pam.AtLeastOneSuccessfulStrategy"></bean>
-        </property>
+    <!-- 事务配置，全注解形式 -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
     </bean>
-
-    <!--
-    	3. 配置 Realm
-    	3.1 直接配置实现了 org.apache.shiro.realm.Realm 接口的 bean
-    -->
-    <bean id="jdbcRealm" class="cn.jiahaixin.shiro.realms.ShiroRealm">
-        <!-- 加密密码 -->
-        <property name="credentialsMatcher">
-            <bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
-                <property name="hashAlgorithmName" value="MD5"></property>
-                <!-- 设置加密的次数 -->
-                <property name="hashIterations" value="1024"></property>
-            </bean>
-        </property>
-    </bean>
-
-    <!-- 配置多Real-->
-    <bean id="secondRealm" class="cn.jiahaixin.shiro.realms.SecondRealm">
-        <property name="credentialsMatcher">
-            <bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
-                <property name="hashAlgorithmName" value="SHA1"></property>
-                <property name="hashIterations" value="1024"></property>
-            </bean>
-        </property>
-    </bean>
-
-
-    <!--
-    4. 配置 LifecycleBeanPostProcessor. 可以自定的来调用配置在 Spring IOC 容器中 shiro bean 的生命周期方法.
-    -->
-    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
-
-    <!-- Enable Shiro Annotations for Spring-configured beans.  Only run after
-             the lifecycleBeanProcessor has run: -->
-    <!--
-    5. 启用 IOC 容器中使用 shiro 的注解. 但必须在配置了 LifecycleBeanPostProcessor 之后才可以使用.
-    -->
-    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
-          depends-on="lifecycleBeanPostProcessor"/>
-    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
-        <property name="securityManager" ref="securityManager"/>
-    </bean>
-
-    <!--
-   6. 配置 ShiroFilter.
-   6.1 id 必须和 web.xml 文件中配置的 DelegatingFilterProxy 的 <filter-name> 一致.
-                     若不一致, 则会抛出: NoSuchBeanDefinitionException. 因为 Shiro 会来 IOC 容器中查找和 <filter-name> 名字对应的 filter bean.
-   -->
-    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
-        <property name="securityManager" ref="securityManager"/>
-        <property name="loginUrl" value="/login.jsp"/>
-        <property name="successUrl" value="/list.jsp"/>
-        <property name="unauthorizedUrl" value="/unauthorized.jsp"/>
-
-
-        <!--
-        	配置哪些页面需要受保护.
-        	以及访问这些页面需要的权限.
-        	1). anon 可以被匿名访问
-        	2). authc 必须认证(即登录)后才可能访问的页面.
-        	3). logout 登出.
-        	4). roles 角色过滤器
-        -->
-
-        <property name="filterChainDefinitions">
-            <value>
-                /login.jsp = anon
-                /shiro/login = anon
-                /shiro/logout = logout
-
-                /user.jsp = roles[user]
-                /admin.jsp = roles[admin]
-
-                # everything else requires authentication: 除了之前配置的 所有的都需要认证
-                /** = authc
-            </value>
-        </property>
-
-    </bean>
+    <tx:annotation-driven transaction-manager="transactionManager" />
 </beans>

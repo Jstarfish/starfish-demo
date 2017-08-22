@@ -1,6 +1,8 @@
 package cn.jiahaixin.shiro.realms;
 
 
+import cn.jiahaixin.system.service.UserService;
+import cn.jiahaixin.system.model.User;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -8,12 +10,18 @@ import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.realm.AuthenticatingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public class ShiroRealm extends AuthenticatingRealm {
+@Repository
+public class UserRealm extends AuthenticatingRealm {
 
+
+    @Autowired
+    private UserService userService;
 
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         System.out.println("[FirstRealm] doGetAuthenticationInfo");
@@ -26,7 +34,9 @@ public class ShiroRealm extends AuthenticatingRealm {
         String username = upToken.getUsername();
 
         //3. 调用数据库的方法, 从数据库中查询 username 对应的用户记录
+        //User user = userService.getUserInfo(username);
         System.out.println("从数据库中获取 username: " + username + " 所对应的用户信息.");
+
 
         //4. 若用户不存在, 则可以抛出 UnknownAccountException 异常
         if ("unknown".equals(username)) {
@@ -63,6 +73,8 @@ public class ShiroRealm extends AuthenticatingRealm {
         ByteSource credentialsSalt = ByteSource.Util.bytes(username);
 
         SimpleAuthenticationInfo info = null; //new SimpleAuthenticationInfo(principal, credentials, realmName);
+
+        //如果身份认证验证成功，返回一个AuthenticationInfo实现；
         info = new SimpleAuthenticationInfo(principal, credentials, credentialsSalt, realmName);
         return info;
     }

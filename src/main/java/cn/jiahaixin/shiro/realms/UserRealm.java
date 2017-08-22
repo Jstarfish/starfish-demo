@@ -34,7 +34,9 @@ public class UserRealm extends AuthenticatingRealm {
         String username = upToken.getUsername();
 
         //3. 调用数据库的方法, 从数据库中查询 username 对应的用户记录
-        //User user = userService.getUserInfo(username);
+        User user = userService.getUserInfo(username);
+        String userName = user.getUserName();
+        System.out.println(userName);
         System.out.println("从数据库中获取 username: " + username + " 所对应的用户信息.");
 
 

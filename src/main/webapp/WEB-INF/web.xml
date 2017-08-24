@@ -39,12 +39,13 @@
   </servlet-mapping>
 
   <welcome-file-list>
-    <welcome-file>/login.jsp</welcome-file>
+  <!--  <welcome-file>/views/login.jsp</welcome-file>-->
+    <welcome-file>/views/index.jsp</welcome-file>
   </welcome-file-list>
 
   <error-page>
     <error-code>404</error-code>
-    <location>/views/common/404.html</location>
+    <location>/views/common/404.jsp</location>
   </error-page>
 
 

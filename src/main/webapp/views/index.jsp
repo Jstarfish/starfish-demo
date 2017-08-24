@@ -22,6 +22,20 @@
     <link href="${basePath}/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
     <link href="${basePath}/css/animate.css" rel="stylesheet">
     <link href="${basePath}/css/style.css?v=4.1.0" rel="stylesheet">
+
+    <!-- 全局js -->
+    <script src="${basePath}/js/jquery.min.js?v=2.1.4"></script>
+    <script src="${basePath}/js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="${basePath}/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="${basePath}/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="${basePath}/js/plugins/layer/layer.min.js"></script>
+
+    <!-- 自定义js -->
+    <script src="${basePath}/js/hplus.js?v=4.1.0"></script>
+    <script type="text/javascript" src="${basePath}/js/contabs.js"></script>
+
+    <!-- 第三方插件 -->
+    <script src="${basePath}/js/plugins/pace/pace.min.js"></script>
 </head>
 
 <body class="fixed-sidebar full-height-layout gray-bg" style="overflow:hidden">
@@ -58,6 +72,18 @@
                         <div class="logo-element">H+
                         </div>
                     </li>
+
+                    <li>
+                        <a href="#"><i class="fa fa-cutlery"></i> <span class="nav-label">系统</span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li><a class="J_menuItem" href="user.do?method=getUserList">用户</a>
+                            </li>
+                        </ul>
+                    </li>
+
+
+
+
                     <li>
                         <a href="#">
                             <i class="fa fa-home"></i>
@@ -918,20 +944,6 @@
         </div>
         <!--mini聊天窗口结束-->
     </div>
-
-    <!-- 全局js -->
-    <script src="js/jquery.min.js?v=2.1.4"></script>
-    <script src="js/bootstrap.min.js?v=3.3.6"></script>
-    <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
-    <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-    <script src="js/plugins/layer/layer.min.js"></script>
-
-    <!-- 自定义js -->
-    <script src="js/hplus.js?v=4.1.0"></script>
-    <script type="text/javascript" src="js/contabs.js"></script>
-
-    <!-- 第三方插件 -->
-    <script src="js/plugins/pace/pace.min.js"></script>
 
 </body>
 

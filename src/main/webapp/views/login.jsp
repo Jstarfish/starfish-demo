@@ -9,7 +9,7 @@
 <META http-equiv="Content-Type" content="text/html; charset=utf-8">
 <TITLE>登录页面</TITLE>
 <link href="${basePath}/css/login.css" rel="stylesheet">
-<SCRIPT src="js/jquery-1.9.1.min.js" type="text/javascript"></SCRIPT>
+<SCRIPT src="${basePath}/js/jquery-1.9.1.min.js" type="text/javascript"></SCRIPT>
 
 <SCRIPT type="text/javascript">
     $(function(){
@@ -79,15 +79,14 @@
     <label id="error" class="error"></label>
     <DIV style="height: 50px; line-height: 50px; margin-top: 30px; border-top-color: rgb(231, 231, 231); border-top-width: 1px; border-top-style: solid;">
         <P style="margin: 0px 35px 20px 45px;">
-            <SPAN style="float: left;"><A style="color: rgb(204, 204, 204);"
-                                                                             href="#">忘记密码?</A></SPAN>
+            <SPAN style="float: left;">
+                <A style="color: rgb(204, 204, 204);"  href="#">忘记密码?</A></SPAN>
             <SPAN style="float: right;">
-                <A style="color: rgb(204, 204, 204); margin-right: 10px;"
-                                           href="#">注册</A>
-              <button style="background: rgb(0, 142, 173); padding: 7px 10px; border-radius: 4px; border: 1px solid rgb(26, 117, 152); border-image: none; color: rgb(255, 255, 255); font-weight: bold;"
-                 id="loginBtn">登录</button>
+                <A style="color: rgb(204, 204, 204); margin-right: 10px;"href="#">注册</A>
+            <button style="background: rgb(0, 142, 173); padding: 7px 10px; border-radius: 4px; border: 1px solid rgb(26, 117, 152); border-image: none; color: rgb(255, 255, 255); font-weight: bold;"  id="loginBtn">登录</button>
            </SPAN>
-        </P></DIV>
+        </P>
+    </DIV>
 </DIV>
 <div style="text-align:center;">
 </div>

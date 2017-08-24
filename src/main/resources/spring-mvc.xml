@@ -11,10 +11,11 @@
 	<context:component-scan base-package="cn.jiahaixin.**.controller" />
 	
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="prefix" value="/"></property>
+		<property name="prefix" value="/views/"></property>
 		<property name="suffix" value=".jsp"></property>
 	</bean>
-	
+
+
 	<mvc:annotation-driven></mvc:annotation-driven>
 	<mvc:default-servlet-handler/>
 

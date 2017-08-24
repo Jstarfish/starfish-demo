@@ -59,22 +59,22 @@
         3. 配置 Realm
         3.1 直接配置实现了 org.apache.shiro.realm.Realm 接口的 bean
     -->
-	<bean id="userRealm" class="cn.jiahaixin.system.realms.UserRealm">
-		<!-- 加密密码 -->
-		<!--<property name="credentialsMatcher">
-			<bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
-				<property name="hashAlgorithmName" value="MD5"></property>-->
-				<!-- 设置加密的次数 -->
-				<!--<property name="hashIterations" value="1024"></property>
-			</bean>
-		</property>-->
-	</bean>
-
-	<!-- 配置多Real-->
 	<bean id="secondRealm" class="cn.jiahaixin.system.realms.SecondRealm">
 		<property name="credentialsMatcher">
 			<bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
 				<property name="hashAlgorithmName" value="SHA1"></property>
+				<property name="hashIterations" value="1024"></property>
+			</bean>
+		</property>
+	</bean>
+
+	<!-- 配置多Real-->
+
+	<bean id="userRealm" class="cn.jiahaixin.system.realms.UserRealm">
+		<!-- 配置认证的数据源使用的密码校验接口,也可以自己写认证方法 -->
+		<property name="credentialsMatcher">
+			<bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+				<property name="hashAlgorithmName" value="MD5"></property>
 				<property name="hashIterations" value="1024"></property>
 			</bean>
 		</property>
@@ -104,8 +104,8 @@
    -->
 	 <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
        <property name="securityManager" ref="securityManager"/>
-        <property name="loginUrl" value="/login.jsp"/>
-        <property name="successUrl" value="/list.jsp"/>
+       <!-- <property name="loginUrl" value="/login.jsp"/>-->
+       <!-- <property name="successUrl" value="/list.jsp"/>-->
         <property name="unauthorizedUrl" value="/unauthorized.jsp"/>
 
 

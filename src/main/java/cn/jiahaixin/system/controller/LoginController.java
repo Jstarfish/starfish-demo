@@ -29,9 +29,11 @@ public class LoginController {
     public String doLogin(HttpServletRequest request,
                           @RequestParam("userName") String userName,
                           @RequestParam("password") String password){
-       // password = encrypt(userName,password);
+
+        //password = encrypt(userName,password);
         Subject currentUser = SecurityUtils.getSubject();
-        if (!currentUser.isAuthenticated()){
+        //TODO: currentUser.isAuthenticated() 被改写问题
+        //if (!currentUser.isAuthenticated()){
             UsernamePasswordToken token = new UsernamePasswordToken(userName,password);
             token.setRememberMe(true);
             try{
@@ -39,7 +41,6 @@ public class LoginController {
                 System.out.println("1. " + token.hashCode());
                 //可以login的话，说明认证通过
                 currentUser.login(token);
-                System.out.println("---");
                 return "redirect:/index.do";
             }catch (UnknownAccountException uae) {
                 log.error("-----用户不存在-----"+uae.getMessage());
@@ -49,20 +50,18 @@ public class LoginController {
                 System.out.println("登录失败："+e.getMessage());
                 log.error(e.getMessage());
                 e.printStackTrace();
-                token.clear();
+                //token.clear();
             }
-            return "error";
+            return "common/404";
 
-        }
-        return null;
+       // }
+       // return "redirect:/index.do";
     }
 
     private String encrypt(String username,String password) {
         String hashAlgorithmName = "MD5";
         Object salt = ByteSource.Util.bytes(username);
-        ;
         int hashIterations = 1024;
-
         Object result = new SimpleHash(hashAlgorithmName, password, salt, hashIterations);
        // System.out.println(result);
         return result.toString();

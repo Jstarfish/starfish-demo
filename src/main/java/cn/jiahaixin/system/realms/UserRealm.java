@@ -78,9 +78,9 @@ public class UserRealm extends AuthenticatingRealm {
 
         SimpleAuthenticationInfo info = null; //new SimpleAuthenticationInfo(principal, credentials, realmName);
 
-        //如果身份认证验证成功，返回一个AuthenticationInfo实现；
-        // info = new SimpleAuthenticationInfo(principal, credentials, credentialsSalt, realmName);
-        info = new SimpleAuthenticationInfo(principal, credentials, realmName);
+        //如果身份认证验证成功，返回一个AuthenticationInfo实现；也就是说 比对的工作shiro来做
+        info = new SimpleAuthenticationInfo(principal, credentials, credentialsSalt, realmName);
+        //info = new SimpleAuthenticationInfo(principal, credentials, realmName);
         return info;
     }
 

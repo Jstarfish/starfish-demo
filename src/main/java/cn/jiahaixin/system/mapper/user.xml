@@ -20,7 +20,7 @@
 	</resultMap>-->
 
 	<select id="getUserInfo" parameterType="String" resultType="cn.jiahaixin.system.model.User">
-		select * from User from #{username}
+		select t.userName userName,t.userPassword password from User t where t.userName= #{username}
 	</select>
 	
 </mapper>

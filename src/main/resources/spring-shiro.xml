@@ -26,7 +26,7 @@
 		<property name="realms">
 			<list>
 				<ref bean="userRealm"/>
-				<ref bean="secondRealm"/>
+				<!--<ref bean="secondRealm"/>-->
 			</list>
 		</property>
 	</bean>
@@ -59,19 +59,19 @@
         3. 配置 Realm
         3.1 直接配置实现了 org.apache.shiro.realm.Realm 接口的 bean
     -->
-	<bean id="userRealm" class="cn.jiahaixin.shiro.realms.UserRealm">
+	<bean id="userRealm" class="cn.jiahaixin.system.realms.UserRealm">
 		<!-- 加密密码 -->
-		<property name="credentialsMatcher">
+		<!--<property name="credentialsMatcher">
 			<bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
-				<property name="hashAlgorithmName" value="MD5"></property>
+				<property name="hashAlgorithmName" value="MD5"></property>-->
 				<!-- 设置加密的次数 -->
-				<property name="hashIterations" value="1024"></property>
+				<!--<property name="hashIterations" value="1024"></property>
 			</bean>
-		</property>
+		</property>-->
 	</bean>
 
 	<!-- 配置多Real-->
-	<bean id="secondRealm" class="cn.jiahaixin.shiro.realms.SecondRealm">
+	<bean id="secondRealm" class="cn.jiahaixin.system.realms.SecondRealm">
 		<property name="credentialsMatcher">
 			<bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
 				<property name="hashAlgorithmName" value="SHA1"></property>

@@ -11,6 +11,7 @@
   <!-- 管理版本-->
   <properties>
     <org.springframework.version>4.3.10.RELEASE</org.springframework.version>
+    <jackson.version>2.8.9</jackson.version>
   </properties>
 
 
@@ -180,6 +181,21 @@
       <version>1.16.16</version>
       <scope>provided</scope>
     </dependency>
+
+
+    <!-- jackson springmvc默认是没有对象转换成json的转换器的，需要手动添加jackson依赖-->
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>${jackson.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
+      <version>${jackson.version}</version>
+    </dependency>
+
 
 
   </dependencies>

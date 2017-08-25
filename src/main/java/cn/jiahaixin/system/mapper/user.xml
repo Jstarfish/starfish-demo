@@ -1,26 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.jiahaixin.system.dao.UserDao">
-	<!--<resultMap type="cn.jiahaixin.system.model.User" id="user">
-		<id column="admin_id" property="id" />
-		<result column="admin_realname" property="realName" />
-		<result column="admin_login" property="loginId" />
-		<result column="admin_password" property="password" />
-		<result column="admin_gender" property="gender" />
-		<result column="admin_email" property="email" />
-		<result column="admin_birthday" property="birthday" />
-		<result column="ADMIN_MOBILE" property="phone" />
-		<result column="admin_address" property="address" />
-		<result column="admin_status" property="status" />
-		<result column="admin_create_time" property="createTime" />
-		<result column="create_admin_id" property="createAdminId" />
-		<result column="admin_remark" property="remark" />
-		<result column="admin_org" property="orgCode" />
-		<result column="org_name" property="orgName" />
-	</resultMap>-->
+	<resultMap type="cn.jiahaixin.system.model.User" id="user">
+		<id column="userId" property="userId" />
+		<result column="userName" property="userName" />
+		<result column="userPassword" property="password" />
+		<result column="phone" property="phone" />
+		<result column="address" property="address" />
+		<result column="status" property="status" />
+		<result column="createTime" property="createTime" />
+	</resultMap>
 
 	<select id="getUserInfo" parameterType="String" resultType="cn.jiahaixin.system.model.User">
 		select t.userName userName,t.userPassword password from User t where t.userName= #{username}
+	</select>
+
+	<select id="getAllUsers" parameterType="cn.jiahaixin.system.form.UserForm" resultMap="user">
+		select t.userName ,t.realName,t.phone,t.address,t.createTime,t.status from User t
 	</select>
 	
 </mapper>

@@ -12,6 +12,10 @@
     http://www.springframework.org/schema/context/spring-context-3.0.xsd">
       <!-- default-autowire="byName">-->
 
+    <import resource="spring-shiro.xml"/>
+    <import resource="spring-jpa.xml"/>
+    <!--<import resource="classpath:config/spring-redis.xml"/>-->
+
 
     <!-- 引入属性文件 -->
     <bean id="propertyConfigurer"
@@ -31,11 +35,6 @@
 
     <!-- 自动扫瞄 -->
     <context:component-scan base-package="cn.jiahaixin" />
-
-
-    <import resource="spring-shiro.xml"/>
-    <!--<import resource="classpath:config/spring-redis.xml"/>-->
-
 
 
     <!-- db配置 -->

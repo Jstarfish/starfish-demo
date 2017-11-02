@@ -75,8 +75,11 @@
                         <ul class="nav nav-second-level">
                             <li><a class="J_menuItem" href="user.do?method=getUserList">用户</a>
                             </li>
+                            <li><a class="J_menuItem" href="department.do?method=getDepartmentList">部门</a>
+                            </li>
                         </ul>
                     </li>
+
 
 
 

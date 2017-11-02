@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa-1.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+
+
+<!-- 2. 配置 JPA 的 EntityManagerFactory -->
+    <bean id="entityManagerFactory"
+          class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <!-- 指定数据源 -->
+        <property name="dataSource" ref="dataSource"></property>
+        <!-- 指定Entity实体类包路径 -->
+        <property name="packagesToScan" value="cn.jiahaixin.**.model"></property>
+        <!-- 指定JPA属性；如Hibernate中指定是否显示SQL的是否显示、方言等 -->
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"></bean>
+        </property>
+      <property name="jpaProperties">
+          <props>
+              <!-- 二级缓存相关 -->
+                <!--
+                <prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</prop>
+                <prop key="net.sf.ehcache.configurationResourceName">ehcache-hibernate.xml</prop>
+                -->
+                <!-- 生成的数据表的列的映射策略 -->
+                <prop key="hibernate.ejb.naming_strategy">org.hibernate.cfg.ImprovedNamingStrategy</prop>
+                <!-- hibernate 基本属性 -->
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.format_sql">true</prop>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!-- 3. 配置事务管理器 ，需要 hibernate-entitymanager jar包的支持-->
+    <bean id="transactionManager"
+          class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory"></property>
+    </bean>
+
+    <!-- 4. 配置支持注解的事务,applicationContext中已经配置 -->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+    <!-- 5. 配置 SpringData -->
+    <!-- 加入  jpa 的命名空间 -->
+    <!-- base-package: 扫描 Repository Bean 所在的 package -->
+    <jpa:repositories base-package="cn.jiahaixin"
+                      entity-manager-factory-ref="entityManagerFactory"></jpa:repositories>
+
+
+    <!-- 配置 启用扫描并自动创建代理的功能  factory-class="com.monk.base.jpa.PeakJpaRepositoryFactory"自己定义的bean注解方式，可以不写，直接注解所有包下的 -->
+   <!-- <jpa:repositories base-package="cn.jiahaixin.*.dao" entity-manager-factory-ref="entityManagerFactory" transaction-manager-ref="transactionManager" factory-class="cn.jiahaiixn.common.jpa.PeakJpaRepositoryFactory">   </jpa:repositories>-->
+
+</beans>
